@@ -82,7 +82,7 @@ async def analyze_resume(
         "Key Matched Skills": [],
         "Gaps in Required Skills or Experience": [
             "python",
-            "3 years of experience"
+            "4 years of experience"
         ],
         "Brief Explanation": "The resume does not meet any of the explicitly stated requirements in the job description. The job description requires 3 years of experience with Python, which is not mentioned in the resume. Therefore, 0% of the required qualifications were met.",
         "Experience Analysis": {
