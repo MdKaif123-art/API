@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analyzer</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="file"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .loading { display: none; margin-top: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Analyzer</h1>
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="resume">Upload Resume (PDF):</label>
+                <input type="file" id="resume" name="resume_file" accept=".pdf" required>
+            </div>
+            <div class="form-group">
+                <label for="jobDescription">Upload Job Description (TXT/PDF):</label>
+                <input type="file" id="jobDescription" name="job_description" accept=".txt,.pdf" required>
+            </div>
+            <button type="submit">Analyze Resume</button>
+        </form>
+        <div class="loading" id="loading">
+            Analyzing... Please wait...
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            const resumeFile = document.getElementById('resume').files[0];
+            const jobDescFile = document.getElementById('jobDescription').files[0];
+            if (!resumeFile || !jobDescFile) {
+                alert('Please select both files');
+                return;
+            }
+            formData.append('resume_file', resumeFile);
+            formData.append('job_description', jobDescFile);
+
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('http://localhost:8000/analyze-resume', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                // Save the result to localStorage and redirect
+                localStorage.setItem('resume_analysis_result', JSON.stringify(data, null, 2));
+                window.location.href = "result.html";
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
