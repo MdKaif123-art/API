@@ -77,12 +77,28 @@ async def analyze_resume(
     job_description_text: str = File(None)
 ):
     # For now, ignore the file/text contents and return the mock response
-    mock_response = get_mock_analysis()
-    return {
-        "status": "success",
-        "message": "Analysis completed successfully (MOCK RESPONSE)",
-        "data": mock_response
+    mock_response = {
+        "Match Score": 0,
+        "Key Matched Skills": [],
+        "Gaps in Required Skills or Experience": [
+            "python",
+            "3 years of experience"
+        ],
+        "Brief Explanation": "The resume does not meet any of the explicitly stated requirements in the job description. The job description requires 3 years of experience with Python, which is not mentioned in the resume. Therefore, 0% of the required qualifications were met.",
+        "Experience Analysis": {
+            "Company-wise Experience Summary": [
+                "Infosys Limited – Technology Analyst – From December 2021 to May 2025 – Duration: 3 years 6 months"
+            ],
+            "Total Work Experience": "3 years 6 months",
+            "Experience Match": "No",
+            "Is Fresher?": "No",
+            "Date Issues": "None"
+        },
+        "LinkedIn Profile Check": "No LinkedIn URL found",
+        "Email Check": "rkamalesh123@gmail.com",
+        "Freelancer or Contractor Check": "No"
     }
+    return mock_response
 
 if __name__ == "__main__":
     import uvicorn
